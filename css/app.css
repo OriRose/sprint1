@@ -6,4 +6,19 @@ body {background-color: black; color:white}
 
 .shown {
   background-image: none;
-  background-color: lightblue;}
+  background-color: lightblue;
+  color: darkblue;
+  font-weight: bold;
+  font-size: large;  
+}
+
+.blown{
+  background-image: none;
+  background-color: red;
+}
+
+button{
+  width: 30%;
+  display: inline;
+  padding: 0.5%;
+}

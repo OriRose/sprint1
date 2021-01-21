@@ -74,6 +74,11 @@ button{
 table{
   margin-left: auto;
   margin-right: auto;
+  border-collapse: collapse;
+}
+
+table, td, th {
+  border: 1px solid black;
 }
 
 .x-button{

@@ -1,7 +1,15 @@
-body {background-color: black; color:white}
+body {
+  background-image: url('../img/background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
 .cell {width:40px; height:40px;text-align: center; 
   background-image: linear-gradient(to bottom right,white, gray);
+}
+
+.cell:hover{
+  cursor: default;
 }
 
 .shown {
@@ -21,4 +29,71 @@ button{
   width: 30%;
   display: inline;
   padding: 0.5%;
+}
+
+.modal {
+  background-color: lightseagreen;
+  display:none;
+  position: absolute;
+  top:270px;
+  right: 40%;
+  padding: 5px;
+  width: 300px;
+  height: 150px;
+  border: solid black 3px;
+  border-radius: 25px;
+}
+
+.restart-button{
+  margin: 0;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  -ms-transform: translatex(-50%);
+  transform: translatex(-50%);
+}
+
+table{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.x-button{
+  float: right;
+  width: 5%;
+  background-color: red;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.smiley{
+  text-align: center;
+  padding: 15px;
+  font-size: 40px;
+  cursor: pointer;
+  width: 40px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.timer,.mines-counter{
+  text-align: center;
+  color: white;
+}
+
+h1 {
+    font-size: 72px;
+    background: -webkit-linear-gradient(black, red, orange, yellow, green, cyan, blue, purple,black);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+}
+
+.shading{
+  margin-top: 3%;
+  background-color: rgba(0,0,0,0.2);
+}
+
+.instructions{
+  color: white;
 }

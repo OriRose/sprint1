@@ -1,13 +1,14 @@
 'use strict'
 const MINE = '💣';
 const FLAG = '🚩';
+const SMILEY = '🙂';
+const DEAD_SMILEY = '💀';
+const COOL_SMILEY = '😎';
 
 var gGame = { isOn: false, shownCount: 0, markedCount: 0, secsPassed: 0, isTimerOn: false };
 var gLevel = { SIZE: 4, MINES: 2 };
 var gBoard;
 var gGameInterval;
-
-
 
 function initGame() {
     gBoard = buildBoard();
@@ -15,9 +16,32 @@ function initGame() {
     gGame.isOn = true;
     var elCounter = document.querySelector('.mines-counter span');
     elCounter.innerText = gLevel.MINES;
+    var elSmiley = document.querySelector('.smiley');
+    elSmiley.innerText = SMILEY;
+    gGame.shownCount = 0;
+    document.body.style.backgroundImage = "url('../img/background.jpg')"
+    document.querySelector('.timer').style.color = "white"
+    document.querySelector('.mines-counter').style.color = "white"
+    document.querySelector('.instructions').style.color = "white"
+}
+
+function getDifficulty(difficulty) {
+    if (gGame.isTimerOn) {
+        var elModal = document.querySelector('.modal');
+        elModal.style.display = 'block';
+        var elModalText = document.querySelector('.modal-text span');
+        elModalText.innerText = difficulty;
+        var elBtn = document.querySelector('.restart-button');
+        elBtn.setAttribute("onclick", `setDifficulty('${difficulty}')`)
+        console.log(elBtn.getAttribute("onclick"))
+    }
+    else {
+        setDifficulty(difficulty);
+    }
 }
 
 function setDifficulty(difficulty) {
+    closeModal();
     gGame = { isOn: false, shownCount: 0, markedCount: 0, secsPassed: 0, isTimerOn: false };
     clearInterval(gGameInterval);
     updateTimer();
@@ -46,19 +70,6 @@ function buildBoard() {
             }
         }
     }
-
-    var minesPlacedCount = 0;
-    while (minesPlacedCount < gLevel.MINES) {
-        var randomI = getRandomInt(0, gLevel.SIZE - 1);
-        var randomJ = getRandomInt(0, gLevel.SIZE - 1);
-        if (!board[randomI][randomJ].isMine) {
-            board[randomI][randomJ].isMine = true;
-            board[randomI][randomJ].minesAroundCount = NaN;
-            minesPlacedCount++;
-        }
-    }
-
-    setMinesNegsCount(board);
 
     return board;
 }
@@ -111,15 +122,31 @@ function renderBoard(board) {
 }
 
 function cellClicked(elCell, i, j) {
+    if (gBoard[i][j].isShown) return null;
     if (!gGame.isTimerOn) {
         gGame.isTimerOn = true;
         gGameInterval = setInterval(timerTick, 1000);
+        var minesPlacedCount = 0;
+        while (minesPlacedCount < gLevel.MINES) {
+            var randomI = getRandomInt(0, gLevel.SIZE - 1);
+            var randomJ = getRandomInt(0, gLevel.SIZE - 1);
+            if (randomI > i - 2 && randomI < i + 2 && randomJ > j - 2 && randomJ < j + 2) continue;
+            if (!gBoard[randomI][randomJ].isMine) {
+                gBoard[randomI][randomJ].isMine = true;
+                gBoard[randomI][randomJ].minesAroundCount = NaN;
+                minesPlacedCount++;
+            }
+        }
+
+        setMinesNegsCount(gBoard);
     }
     if (gGame.isOn && !gBoard[i][j].isMarked) {
         gBoard[i][j].isShown = true;
         elCell.classList.add('shown');
         gGame.shownCount++;
         if (gBoard[i][j].isMine) {
+            var elSmiley = document.querySelector('.smiley');
+            elSmiley.innerText = DEAD_SMILEY;
             for (var n = 0; n < gLevel.SIZE; n++) {
                 for (var m = 0; m < gLevel.SIZE; m++) {
                     if (gBoard[n][m].isMine) {
@@ -150,13 +177,22 @@ function cellMarked(i, j) {
         elCounter.innerText = parseInt(elCounter.innerText) + unmarkedDiff;
 
         gBoard[i][j].isMarked = !gBoard[i][j].isMarked
+
+        checkGameOver();
     }
 }
 
 function checkGameOver() {
     if (gGame.shownCount + gLevel.MINES === Math.pow(gLevel.SIZE, 2)) {
-        var audio = new Audio('victory.wav');
+        if (!allMinesMarked()) return false;
+        var elSmiley = document.querySelector('.smiley');
+        elSmiley.innerText = COOL_SMILEY;
+        var audio = new Audio('victory.mp3');
         audio.play();
+        document.body.style.backgroundImage = "url('../img/confetti.png')"
+        document.querySelector('.timer').style.color = "black"
+        document.querySelector('.mines-counter').style.color = "black"
+        document.querySelector('.instructions').style.color = "black"
         endGame();
     }
 }
@@ -171,24 +207,24 @@ function expandShown(board, cellI, cellJ) {
             var elCurrCell = document.querySelector(`.cell-${i}-${j}`);
             elCurrCell.classList.add('shown');
             gGame.shownCount++;
+            gBoard[i][j].isShown = true;
             console.log('shownCount: ', gGame.shownCount);
             checkGameOver();
             if (gBoard[i][j].minesAroundCount > 0) {
                 renderCell({ i: i, j: j }, gBoard[i][j].minesAroundCount);
             }
-            //full expand is WIP, currently results in an infinite loop ):
-            // else if (gBoard[i][j].minesAroundCount === 0) {
-            //     expandShown(gBoard, i, j)
-            // }
+            else if (gBoard[i][j].minesAroundCount === 0) {
+                expandShown(gBoard, i, j)
+            }
         }
     }
 }
 
-
 function blowUp(elCell) {
     elCell.classList.add('blown');
-    var audio = new Audio('fatality.mp3');
+    var audio = new Audio('sadtrombone.mp3');
     audio.play();
+    document.body.style.backgroundImage = "url('../img/mushroom_cloud.jpg')"
     endGame();
 }
 
@@ -206,4 +242,25 @@ function endGame() {
     gGame.isOn = false;
     clearInterval(gGameInterval);
     gGame.isTimerOn = false;
+}
+
+function closeModal() {
+    var elModal = document.querySelector('.modal');
+    elModal.style.display = 'none';
+}
+
+function allMinesMarked() {
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard.length; j++) {
+            if (gBoard[i][j].isMine && !gBoard[i][j].isMarked) return false;
+        }
+    }
+    return true;
+}
+
+function smileyClicked(){
+    endGame();
+    gGame.secsPassed = 0;
+    updateTimer();
+    initGame();
 }

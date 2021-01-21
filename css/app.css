@@ -101,9 +101,9 @@ table{
 
 h1 {
     font-size: 72px;
-    background: -webkit-linear-gradient(black, red, orange, yellow, green, cyan, blue, purple,black);
+    /* background: -webkit-linear-gradient(black, red, orange, yellow, green, cyan, blue, purple,black);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent; */
     text-align: center;
 }
 

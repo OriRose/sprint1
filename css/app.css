@@ -1,5 +1,23 @@
-body {
+/* body {
   background-image: url('../img/background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+} */
+
+.default-background {
+  background-image: url('../img/background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.lose-background {
+  background-image: url('../img/mushroom_cloud.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.win-background {
+  background-image: url('../img/confetti.png');
   background-size: cover;
   background-repeat: no-repeat;
 }

@@ -19,7 +19,9 @@ function initGame() {
     var elSmiley = document.querySelector('.smiley');
     elSmiley.innerText = SMILEY;
     gGame.shownCount = 0;
-    document.body.style.backgroundImage = "url('../img/background.jpg')"
+    document.body.classList.add('default-background')
+    document.body.classList.remove('lose-background')
+    document.body.classList.remove('win-background')
     document.querySelector('.timer').style.color = "white"
     document.querySelector('.mines-counter').style.color = "white"
     document.querySelector('.instructions').style.color = "white"
@@ -189,7 +191,8 @@ function checkGameOver() {
         elSmiley.innerText = COOL_SMILEY;
         var audio = new Audio('victory.mp3');
         audio.play();
-        document.body.style.backgroundImage = "url('../img/confetti.png')"
+        document.body.classList.remove('default-background')
+        document.body.classList.add('win-background')
         document.querySelector('.timer').style.color = "black"
         document.querySelector('.mines-counter').style.color = "black"
         document.querySelector('.instructions').style.color = "black"
@@ -224,7 +227,8 @@ function blowUp(elCell) {
     elCell.classList.add('blown');
     var audio = new Audio('sadtrombone.mp3');
     audio.play();
-    document.body.style.backgroundImage = "url('../img/mushroom_cloud.jpg')"
+    document.body.classList.remove('default-background')
+    document.body.classList.add('lose-background')
     endGame();
 }
 

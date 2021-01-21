@@ -48,13 +48,13 @@ function setDifficulty(difficulty) {
     clearInterval(gGameInterval);
     updateTimer();
     switch (difficulty) {
-        case 'easy':
+        case 'beginner':
             gLevel = { SIZE: 4, MINES: 2 };
             break;
         case 'medium':
             gLevel = { SIZE: 8, MINES: 12 };
             break;
-        case 'hard':
+        case 'expert':
             gLevel = { SIZE: 12, MINES: 30 };
             break;
     }

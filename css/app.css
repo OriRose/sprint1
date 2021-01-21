@@ -106,9 +106,7 @@ table, td, th {
 
 h1 {
     font-size: 72px;
-    /* background: -webkit-linear-gradient(black, red, orange, yellow, green, cyan, blue, purple,black);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; */
+    text-shadow: 2px 2px 5px green, 0 0 10px red;
     text-align: center;
 }
 

@@ -189,8 +189,7 @@ function checkGameOver() {
         if (!allMinesMarked()) return false;
         var elSmiley = document.querySelector('.smiley');
         elSmiley.innerText = COOL_SMILEY;
-        var audio = new Audio('victory.mp3');
-        audio.play();
+        document.getElementById('victory').play();
         document.body.classList.remove('default-background')
         document.body.classList.add('win-background')
         document.querySelector('.timer').style.color = "black"
@@ -225,8 +224,7 @@ function expandShown(board, cellI, cellJ) {
 
 function blowUp(elCell) {
     elCell.classList.add('blown');
-    var audio = new Audio('sadtrombone.mp3');
-    audio.play();
+    document.getElementById('sadtrombone').play();
     document.body.classList.remove('default-background')
     document.body.classList.add('lose-background')
     endGame();
